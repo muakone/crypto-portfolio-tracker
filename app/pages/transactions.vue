@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen px-6 py-8">
+  <div class="min-h-screen px-6 py-8 lg:py-8">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="mb-8">
+      <!-- Header (Desktop Only) -->
+      <div class="mb-8 hidden lg:block">
         <NuxtLink
           to="/dashboard"
           class="text-gray-400 hover:text-white mb-4 inline-block"
@@ -265,6 +265,7 @@ import type { User } from "@supabase/supabase-js";
 
 definePageMeta({
   layout: "dashboard",
+  middleware: "auth",
 });
 
 const { getUser, getWallets } = useSupabase();

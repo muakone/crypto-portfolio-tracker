@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      // Nuxt automatically populates these from NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY env vars
       supabaseUrl: "",
       supabasePublishableKey: "",
       // Blockchain API keys

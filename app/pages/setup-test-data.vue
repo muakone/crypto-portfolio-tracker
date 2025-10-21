@@ -52,9 +52,11 @@
 </template>
 
 <script setup lang="ts">
+import type { User } from "@supabase/supabase-js";
+
 const { getUser, addWallet, saveTokens } = useSupabase();
 
-const user = ref(null);
+const user = ref<User | null>(null);
 const loading = ref(false);
 const message = ref("");
 const messageType = ref<"success" | "error">("success");
@@ -96,19 +98,21 @@ const createTestData = async () => {
     ];
 
     // Fetch current prices to calculate USD values
-    const { fetchPricesBySymbols, symbolToId } = usePrices();
+    const { fetchPricesBySymbols, symbolToId, symbolToName } = usePrices();
     const symbols = testTokens.map((t) => t.symbol);
     const prices = await fetchPricesBySymbols(symbols);
 
     const tokensWithValues = testTokens.map((token) => {
       const coinId = symbolToId(token.symbol);
-      const priceData = prices[coinId];
+      const priceData = prices?.[coinId];
       const price = priceData?.usd || 0;
 
       return {
         wallet_id: wallet[0].id,
+        name: symbolToName(token.symbol) || token.symbol,
         symbol: token.symbol,
         balance: token.balance,
+        price: price,
         usd_value: token.balance * price,
       };
     });
@@ -128,9 +132,11 @@ const createTestData = async () => {
     setTimeout(() => {
       navigateTo("/dashboard");
     }, 2000);
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error creating test data:", err);
-    message.value = err.message || "Failed to create test data";
+    const errorMessage =
+      err instanceof Error ? err.message : "Failed to create test data";
+    message.value = errorMessage;
     messageType.value = "error";
   } finally {
     loading.value = false;

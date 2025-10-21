@@ -19,7 +19,7 @@
         <div class="space-y-6 mb-8">
           <!-- MetaMask Connection -->
           <div>
-            <h3 class="text-xl font-semibold mb-4">🦊 Connect MetaMask</h3>
+            <h3 class="text-xl font-semibold mb-4">Connect MetaMask</h3>
             <p class="text-sm text-gray-400 mb-4">
               Connect your MetaMask wallet to automatically import your Ethereum
               address and balance
@@ -47,7 +47,7 @@
 
           <!-- Manual Entry -->
           <div>
-            <h3 class="text-xl font-semibold mb-4">✍️ Add Manually</h3>
+            <h3 class="text-xl font-semibold mb-4">Add Manually</h3>
 
             <!-- Error/Success Messages -->
             <div
@@ -159,7 +159,7 @@ const handleMetaMaskConnect = async () => {
     const walletAddress = await connectMetaMask();
 
     if (walletAddress) {
-      console.log("🔄 Fetching tokens for:", walletAddress);
+      console.log("Fetching tokens for:", walletAddress);
 
       // Add wallet to database
       const { data: walletData, error: walletError } = await addWallet(
@@ -180,12 +180,12 @@ const handleMetaMaskConnect = async () => {
       }
 
       const walletId = walletData[0].id;
-      console.log("✅ Wallet added with ID:", walletId);
+      console.log("Wallet added with ID:", walletId);
 
       // Fetch real token balances from blockchain
-      console.log("🔍 Fetching real balances...");
+      console.log("Fetching real balances...");
       const tokens = await getAllEthTokens(walletAddress);
-      console.log(`💰 Found ${tokens.length} tokens:`, tokens);
+      console.log(`Found ${tokens.length} tokens:`, tokens);
 
       if (tokens.length > 0) {
         // Get current prices
@@ -194,15 +194,17 @@ const handleMetaMaskConnect = async () => {
 
         // Prepare token records with prices
         const tokenRecords = tokens.map((token) => {
-          const { symbolToId } = usePrices();
+          const { symbolToId, symbolToName } = usePrices();
           const coinId = symbolToId(token.symbol);
-          const priceData = prices[coinId];
+          const priceData = prices?.[coinId];
           const price = priceData?.usd || 0;
           const usdValue = token.balance * price;
 
           return {
+            name: symbolToName(token.symbol) || token.name || token.symbol,
             symbol: token.symbol,
             balance: token.balance,
+            price: price,
             usd_value: usdValue,
           };
         });
@@ -213,7 +215,7 @@ const handleMetaMaskConnect = async () => {
         if (tokensError) {
           console.error("Error saving tokens:", tokensError);
         } else {
-          console.log("✅ Saved tokens to database");
+          console.log("Saved tokens to database");
         }
       }
 
@@ -257,7 +259,7 @@ const handleManualSubmit = async () => {
   loading.value = true;
 
   try {
-    console.log("🔄 Adding wallet:", address.value);
+    console.log("Adding wallet:", address.value);
 
     // Add wallet to database
     const { data: walletData, error: walletError } = await addWallet(
@@ -278,23 +280,23 @@ const handleManualSubmit = async () => {
     }
 
     const walletId = walletData[0].id;
-    console.log("✅ Wallet added with ID:", walletId);
+    console.log("Wallet added with ID:", walletId);
 
     // Fetch real balances based on blockchain
-    let tokens = [];
+    let tokens: Array<{ symbol: string; name: string; balance: number }> = [];
 
     if (chain.value === "ethereum") {
-      console.log("🔍 Fetching Ethereum tokens...");
+      console.log("Fetching Ethereum tokens...");
       tokens = await getAllEthTokens(address.value);
     } else if (chain.value === "bitcoin") {
-      console.log("🔍 Fetching Bitcoin balance...");
+      console.log("Fetching Bitcoin balance...");
       const btcBalance = await getBtcBalance(address.value);
       if (btcBalance > 0) {
         tokens = [{ symbol: "BTC", name: "Bitcoin", balance: btcBalance }];
       }
     }
 
-    console.log(`💰 Found ${tokens.length} tokens:`, tokens);
+    console.log(`Found ${tokens.length} tokens:`, tokens);
 
     if (tokens.length > 0) {
       // Get current prices
@@ -303,15 +305,17 @@ const handleManualSubmit = async () => {
 
       // Prepare token records with prices
       const tokenRecords = tokens.map((token) => {
-        const { symbolToId } = usePrices();
+        const { symbolToId, symbolToName } = usePrices();
         const coinId = symbolToId(token.symbol);
-        const priceData = prices[coinId];
+        const priceData = prices?.[coinId];
         const price = priceData?.usd || 0;
         const usdValue = token.balance * price;
 
         return {
+          name: symbolToName(token.symbol) || token.name || token.symbol,
           symbol: token.symbol,
           balance: token.balance,
+          price: price,
           usd_value: usdValue,
         };
       });
@@ -322,7 +326,7 @@ const handleManualSubmit = async () => {
       if (tokensError) {
         console.error("Error saving tokens:", tokensError);
       } else {
-        console.log("✅ Saved tokens to database");
+        console.log("Saved tokens to database");
       }
     }
 
@@ -342,5 +346,10 @@ const handleManualSubmit = async () => {
 
 useHead({
   title: "Add Wallet",
+});
+
+definePageMeta({
+  layout: "dashboard",
+  middleware: "auth",
 });
 </script>

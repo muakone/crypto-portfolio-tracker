@@ -40,11 +40,11 @@ onMounted(async () => {
 
 // Get user's display name
 const userName = computed(() => {
-  if (!user.value?.email) return "User";
-  return (
-    user.value.email.split("@")[0].charAt(0).toUpperCase() +
-    user.value.email.split("@")[0].slice(1)
-  );
+  const email = user.value?.email;
+  if (!email) return "User";
+  const local = email.split("@")[0] ?? "";
+  if (!local) return "User";
+  return local.charAt(0).toUpperCase() + local.slice(1);
 });
 
 // Dynamic greeting based on time of day

@@ -18,6 +18,9 @@ logs
 .fleet
 .idea
 
+# Documentation
+docs/
+
 # Local env files
 .env
 .env.*

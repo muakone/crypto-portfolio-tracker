@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen px-6 py-8">
+  <div class="min-h-screen px-6 py-8 lg:py-8">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="mb-8">
+      <!-- Header (Desktop Only) -->
+      <div class="mb-8 hidden lg:block">
         <NuxtLink
           to="/dashboard"
           class="text-gray-400 hover:text-white mb-4 inline-block"
@@ -131,7 +131,7 @@
             </thead>
             <tbody class="divide-y divide-white/5">
               <tr
-                v-for="token in sortedTokens"
+                v-for="token in paginatedTokens"
                 :key="token.id"
                 class="hover:bg-white/5 transition-colors"
               >
@@ -212,6 +212,60 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- Pagination -->
+          <div
+            v-if="totalPages > 1"
+            class="flex items-center justify-between border-t border-white/5 px-6 py-4"
+          >
+            <div class="text-sm text-gray-400">
+              Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+              {{ Math.min(currentPage * itemsPerPage, sortedTokens.length) }} of
+              {{ sortedTokens.length }} assets
+            </div>
+
+            <div class="flex items-center gap-2">
+              <!-- Previous Button -->
+              <button
+                @click="goToPage(currentPage - 1)"
+                :disabled="currentPage === 1"
+                class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              >
+                <Icon name="mdi:chevron-left" class="h-5 w-5" />
+              </button>
+
+              <!-- Page Numbers -->
+              <div class="flex items-center gap-1">
+                <button
+                  v-for="page in totalPages"
+                  :key="page"
+                  v-show="
+                    page === 1 ||
+                    page === totalPages ||
+                    Math.abs(page - currentPage) <= 1
+                  "
+                  @click="goToPage(page)"
+                  :class="[
+                    'px-3 py-2 rounded-lg border transition-all min-w-[40px]',
+                    page === currentPage
+                      ? 'border-blue-500 bg-blue-500/20 text-blue-400 font-semibold'
+                      : 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
+                  ]"
+                >
+                  {{ page }}
+                </button>
+              </div>
+
+              <!-- Next Button -->
+              <button
+                @click="goToPage(currentPage + 1)"
+                :disabled="currentPage === totalPages"
+                class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              >
+                <Icon name="mdi:chevron-right" class="h-5 w-5" />
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Empty State -->
@@ -241,6 +295,7 @@ import { formatCurrency, formatAmount } from "~/utils/format";
 
 definePageMeta({
   layout: "dashboard",
+  middleware: "auth",
 });
 
 const { getUser } = useSupabase();
@@ -249,12 +304,33 @@ const { refreshPortfolio, tokens, totalValue, loading } = usePortfolio();
 const user = ref(null);
 const wallets = ref<any[]>([]);
 
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
 // Computed values
 const sortedTokens = computed(() => {
   return [...tokens.value].sort(
     (a, b) => (b.usd_value || 0) - (a.usd_value || 0)
   );
 });
+
+// Paginated tokens
+const paginatedTokens = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return sortedTokens.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(sortedTokens.value.length / itemsPerPage.value);
+});
+
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
 
 const topAsset = computed(() => sortedTokens.value[0]);
 

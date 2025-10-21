@@ -60,7 +60,7 @@ A **read-only portfolio aggregator** that helps crypto investors:
 - OAuth (Google, GitHub)
 - Web3 wallet login (sign message with MetaMask)
 
-#### 6. **Data Persistence**
+#### tokens6. **Data Persistence**
 
 - Save wallet addresses to database
 - Store historical balance snapshots
@@ -79,8 +79,6 @@ A **read-only portfolio aggregator** that helps crypto investors:
 
 ### Not a Trading Platform
 
-- ❌ No buying/selling crypto
-- ❌ No swapping tokens
 - ❌ No staking or DeFi integrations (initially)
 
 ### Not a Full DeFi Dashboard

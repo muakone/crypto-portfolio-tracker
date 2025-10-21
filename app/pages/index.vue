@@ -77,7 +77,7 @@
               </svg>
             </NuxtLink>
             <NuxtLink
-              to="/demo"
+              to="/"
               class="inline-flex items-center gap-2 rounded-full border-2 border-blue-500/50 bg-transparent px-8 py-4 text-lg font-semibold text-slate-100 transition hover:border-blue-400 hover:bg-blue-500/10"
             >
               Watch Demo
@@ -229,7 +229,7 @@
               style="animation-delay: 1.3s; opacity: 0"
             >
               <NuxtLink
-                to="/integrations"
+                to="/"
                 class="group inline-flex items-center gap-2 text-sm font-medium text-blue-400 transition hover:text-blue-300"
               >
                 <span>Explore all 300+ integrations</span>
@@ -685,7 +685,7 @@
               </NuxtLink>
 
               <NuxtLink
-                to="/demo"
+                to="/"
                 class="rounded-full border-2 border-slate-600 bg-transparent px-8 py-4 text-lg font-semibold text-slate-100 transition-all hover:border-blue-500 hover:bg-blue-500/10"
               >
                 Schedule a Demo

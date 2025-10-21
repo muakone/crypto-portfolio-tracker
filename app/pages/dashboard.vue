@@ -114,6 +114,7 @@ import type { User } from "@supabase/supabase-js";
 
 definePageMeta({
   layout: "dashboard",
+  middleware: "auth",
 });
 
 const { getUser, getWallets } = useSupabase();
@@ -134,8 +135,13 @@ const txLoading = ref(false);
 const primaryWalletAddress = ref<string>("");
 const isSidebarCollapsed = ref(false);
 
-// Use real portfolio data
-const displayTokens = computed(() => tokens.value);
+// Use real portfolio data - LIMIT TO TOP 5 for dashboard
+const displayTokens = computed(() => {
+  // Sort by USD value (highest first) and take top 5
+  return [...tokens.value]
+    .sort((a, b) => (b.usd_value || 0) - (a.usd_value || 0))
+    .slice(0, 5);
+});
 const displayTotalValue = computed(() => totalValue.value);
 const dummyDistribution = computed(() => distribution.value);
 

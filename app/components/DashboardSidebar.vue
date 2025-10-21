@@ -6,37 +6,51 @@
       !isOpen && 'max-lg:-translate-x-full',
     ]"
   >
-    <!-- Logo/Brand -->
+    <!-- Logo/Brand with Close Button (Mobile) -->
     <div
-      class="flex h-16 items-center border-b border-white/10 px-6 flex-shrink-0"
+      class="flex h-16 items-center border-b border-white/10 px-6 flex-shrink-0 justify-between"
       :class="{ 'justify-center px-0': isCollapsed }"
     >
-      <div
-        class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20"
+      <NuxtLink
+        to="/"
+        class="flex items-center hover:opacity-80 transition-opacity"
         :class="{ 'mx-auto': isCollapsed }"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 text-white"
-          viewBox="0 0 24 24"
-          fill="currentColor"
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20"
         >
-          <path
-            d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
-          />
-        </svg>
-      </div>
-      <div v-if="!isCollapsed" class="ml-3">
-        <h1 class="text-sm font-bold text-white">CryptoTracker</h1>
-        <p class="text-xs text-gray-400">Portfolio</p>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-white"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
+            />
+          </svg>
+        </div>
+        <div v-if="!isCollapsed" class="ml-3">
+          <h1 class="text-sm font-bold text-white">CoinFLow</h1>
+          <p class="text-xs text-gray-400">Crypto Tracker Portfolio</p>
+        </div>
+      </NuxtLink>
+
+      <!-- Close Button (Mobile Only) -->
+      <button
+        aria-label="Close sidebar"
+        class="lg:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+        @click="toggleSidebar"
+      >
+        <Icon name="mdi:close" class="h-5 w-5" />
+      </button>
     </div>
 
     <!-- Collapse Toggle Button (Desktop) -->
     <button
-      @click="toggleCollapse"
       class="hidden lg:flex absolute -right-3 top-20 h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all z-50"
       title="Toggle sidebar"
+      @click="toggleCollapse"
     >
       <Icon
         :name="isCollapsed ? 'mdi:chevron-right' : 'mdi:chevron-left'"
@@ -96,14 +110,6 @@
     class="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden"
     @click="toggleSidebar"
   />
-
-  <!-- Mobile Menu Button -->
-  <button
-    class="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-black/40 backdrop-blur-xl border border-white/10 text-white lg:hidden"
-    @click="toggleSidebar"
-  >
-    <Icon :name="isOpen ? 'mdi:close' : 'mdi:menu'" class="h-6 w-6" />
-  </button>
 </template>
 
 <script setup lang="ts">
@@ -197,4 +203,9 @@ const handleLogout = async () => {
   await signOut();
   router.push("/login");
 };
+
+// Expose toggleSidebar to parent components
+defineExpose({
+  toggleSidebar,
+});
 </script>

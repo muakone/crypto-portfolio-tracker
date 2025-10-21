@@ -134,7 +134,7 @@
 import { formatCurrency, formatAmount } from "~/utils/format";
 
 interface Token {
-  id: string;
+  id?: string;
   symbol: string;
   name?: string;
   balance: number;

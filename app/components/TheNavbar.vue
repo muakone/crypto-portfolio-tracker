@@ -14,7 +14,7 @@
         </span>
         <span class="hidden sm:flex flex-col leading-tight">
           <span class="text-xs uppercase tracking-[0.45em] text-gray-400">
-            CoinStats
+            CoinFlow
           </span>
           <span class="text-lg font-semibold">Portfolio</span>
         </span>

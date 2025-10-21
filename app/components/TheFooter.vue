@@ -121,14 +121,14 @@
             </li>
             <li>
               <NuxtLink
-                to="/features"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-blue-400"
                 >Features</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/pricing"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-blue-400"
                 >Pricing</NuxtLink
               >
@@ -145,28 +145,28 @@
           <ul class="space-y-3">
             <li>
               <NuxtLink
-                to="/docs"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-purple-400"
                 >Documentation</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/api"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-purple-400"
                 >API Reference</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/blog"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-purple-400"
                 >Blog</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/support"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-purple-400"
                 >Support</NuxtLink
               >
@@ -183,28 +183,28 @@
           <ul class="space-y-3">
             <li>
               <NuxtLink
-                to="/about"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-indigo-400"
                 >About Us</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/careers"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-indigo-400"
                 >Careers</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/contact"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-indigo-400"
                 >Contact</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
-                to="/press"
+                to="/"
                 class="text-slate-400 transition-colors hover:text-indigo-400"
                 >Press Kit</NuxtLink
               >
@@ -226,16 +226,16 @@
           class="flex flex-wrap gap-6 animate-fade-in"
           style="animation-delay: 100ms"
         >
-          <NuxtLink to="/privacy" class="transition-colors hover:text-blue-400"
+          <NuxtLink to="/" class="transition-colors hover:text-blue-400"
             >Privacy Policy</NuxtLink
           >
-          <NuxtLink to="/terms" class="transition-colors hover:text-blue-400"
+          <NuxtLink to="/" class="transition-colors hover:text-blue-400"
             >Terms of Service</NuxtLink
           >
-          <NuxtLink to="/cookies" class="transition-colors hover:text-blue-400"
+          <NuxtLink to="/" class="transition-colors hover:text-blue-400"
             >Cookie Policy</NuxtLink
           >
-          <NuxtLink to="/status" class="transition-colors hover:text-blue-400"
+          <NuxtLink to="/" class="transition-colors hover:text-blue-400"
             >Status</NuxtLink
           >
         </div>

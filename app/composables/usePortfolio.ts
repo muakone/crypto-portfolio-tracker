@@ -5,6 +5,11 @@ import type {
 } from "~~/shared/types";
 import { formatCurrency, formatPercentage } from "~/utils/format";
 
+interface PriceData {
+  usd: number;
+  usd_24h_change?: number;
+}
+
 export const usePortfolio = () => {
   const tokens = ref<TokenRecord[]>([]);
   const loading = ref(false);
@@ -69,7 +74,7 @@ export const usePortfolio = () => {
   };
 
   // Update token prices
-  const updatePrices = async (priceData: Record<string, any>) => {
+  const updatePrices = async (priceData: Record<string, PriceData>) => {
     const { symbolToId, symbolToName } = usePrices();
 
     tokens.value = tokens.value.map((token: TokenRecord) => {
@@ -101,19 +106,15 @@ export const usePortfolio = () => {
       const { getWallets, getTokens } = useSupabase();
       const { fetchPricesBySymbols, symbolToId, symbolToName } = usePrices();
 
-      console.log("🔄 Refreshing portfolio for user:", userId);
+      console.log(" Refreshing portfolio for user:", userId);
 
       // Get all wallets for user
       const { data: wallets, error: walletsError } = await getWallets(userId);
       if (walletsError) {
-        console.error("❌ Error fetching wallets:", walletsError);
         throw walletsError;
       }
 
-      console.log("💼 Wallets found:", wallets?.length || 0);
-
       if (!wallets || wallets.length === 0) {
-        console.warn("⚠️ No wallets found for user");
         tokens.value = [];
         return;
       }
@@ -125,32 +126,32 @@ export const usePortfolio = () => {
           wallet.id
         );
         if (tokensError) {
-          console.error("❌ Error fetching tokens:", tokensError);
+          console.error("Error fetching tokens:", tokensError);
         }
         if (walletTokens) {
           console.log(
-            `🪙 Tokens for wallet ${wallet.address}:`,
+            `Tokens for wallet ${wallet.address}:`,
             walletTokens.length
           );
           allTokens.push(...walletTokens);
         }
       }
 
-      console.log("📊 Total tokens from DB:", allTokens.length);
+      console.log("Total tokens from DB:", allTokens.length);
 
       if (allTokens.length === 0) {
-        console.warn("⚠️ No tokens found in any wallet");
+        console.warn("No tokens found in any wallet");
         tokens.value = [];
         return;
       }
 
       // Get unique symbols
       const symbols = [...new Set(allTokens.map((t) => t.symbol))];
-      console.log("💱 Fetching prices for:", symbols);
+      console.log("Fetching prices for:", symbols);
 
       // Fetch current prices
       const prices = await fetchPricesBySymbols(symbols);
-      console.log("💰 Prices received:", Object.keys(prices).length);
+      console.log("Prices received:", prices ? Object.keys(prices).length : 0);
 
       if (prices) {
         // Update token values with current prices and 24h changes
@@ -159,7 +160,7 @@ export const usePortfolio = () => {
           const priceData = prices[coinId];
 
           if (!priceData) {
-            console.warn(`⚠️ No price data for ${token.symbol} (${coinId})`);
+            console.warn(`No price data for ${token.symbol} (${coinId})`);
             return {
               ...token,
               name: token.name || symbolToName(token.symbol),
@@ -185,7 +186,7 @@ export const usePortfolio = () => {
         });
 
         console.log(
-          "✅ Portfolio refreshed successfully:",
+          "Portfolio refreshed successfully:",
           tokens.value.length,
           "tokens"
         );
@@ -197,10 +198,10 @@ export const usePortfolio = () => {
           name: token.name || getName(token.symbol),
           price: 0,
         }));
-        console.log("⚠️ No prices available, using default values");
+        console.log("No prices available, using default values");
       }
     } catch (err) {
-      console.error("❌ Error refreshing portfolio:", err);
+      console.error("Error refreshing portfolio:", err);
     } finally {
       loading.value = false;
     }

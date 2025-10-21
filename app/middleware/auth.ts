@@ -7,8 +7,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const { getSession } = useSupabase();
   const session = await getSession();
 
-  // Protected routes that require authentication
-  const protectedRoutes = ["/dashboard", "/add-wallet"];
+  // Protected routes that require authentication (all dashboard pages)
+  const protectedRoutes = [
+    "/dashboard",
+    "/add-wallet",
+    "/analytics",
+    "/assets",
+    "/nfts",
+    "/transactions",
+    "/defi",
+    "/settings",
+  ];
   const isProtectedRoute = protectedRoutes.some((route) =>
     to.path.startsWith(route)
   );

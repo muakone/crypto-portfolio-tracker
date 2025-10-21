@@ -10,7 +10,6 @@ A responsive web app built with **Nuxt 3**, **Supabase**, and **CoinGecko API** 
 - 🪙 Fetch balances and live token prices
 - 📊 Calculate total portfolio value
 - 📈 Display portfolio charts and summary cards
-- 🌑 Sleek CoinStats-style dark UI
 - ☁️ Deployable on Vercel for free
 
 ---

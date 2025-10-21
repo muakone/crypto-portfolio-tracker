@@ -445,4 +445,8 @@ const handleSubmit = async () => {
 useHead({
   title: "Login - Crypto Portfolio Tracker",
 });
+
+definePageMeta({
+  layout: "default",
+});
 </script>

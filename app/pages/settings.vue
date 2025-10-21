@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen px-6 py-8">
+  <div class="min-h-screen px-6 py-8 lg:py-8">
     <div class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="mb-8">
+      <!-- Header (Desktop Only) -->
+      <div class="mb-8 hidden lg:block">
         <h1 class="text-4xl font-bold mb-2">Settings</h1>
         <p class="text-gray-400">Manage your account and preferences</p>
       </div>
@@ -458,6 +458,7 @@ import type { User } from "@supabase/supabase-js";
 
 definePageMeta({
   layout: "dashboard",
+  middleware: "auth",
 });
 
 const { getUser } = useSupabase();
@@ -484,7 +485,8 @@ const dataSharing = ref(true);
 onMounted(async () => {
   user.value = await getUser();
   if (user.value?.email) {
-    displayName.value = user.value.email.split("@")[0];
+    const emailParts = user.value.email.split("@");
+    displayName.value = emailParts[0] || "";
   }
 });
 
