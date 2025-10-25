@@ -34,3 +34,18 @@ export interface PriceData {
   usd: number;
   usd_24h_change?: number;
 }
+
+export interface Transaction {
+  hash: string;
+  from: string;
+  to: string;
+  value: number;
+  timestamp: number;
+  blockNumber?: number;
+  isError?: boolean;
+  type?: string;
+  [key: string]: unknown;
+}
+
+// Alias for token record used across components
+export type Token = TokenRecord;

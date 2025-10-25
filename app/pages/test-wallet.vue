@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen px-4 py-8">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl font-bold mb-8">Test Wallet Fetching</h1>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8">
+        Test Wallet Fetching
+      </h1>
 
       <!-- Test Your Wallet -->
       <div class="glass-card p-8 rounded-3xl mb-8">

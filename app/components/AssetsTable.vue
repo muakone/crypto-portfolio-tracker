@@ -7,7 +7,7 @@
     >
       <table
         class="w-full"
-        :class="collapsed ? 'min-w-[600px]' : 'min-w-[800px]'"
+        :class="collapsed ? 'min-w-[600px]' : 'min-w-[600px] md:min-w-[800px]'"
       >
         <thead>
           <tr class="border-b border-white/5">
@@ -132,20 +132,10 @@
 
 <script setup lang="ts">
 import { formatCurrency, formatAmount } from "~/utils/format";
-
-interface Token {
-  id?: string;
-  symbol: string;
-  name?: string;
-  balance: number;
-  price: number;
-  usd_value: number;
-  change_24h?: number;
-  change_24h_value?: number;
-}
+import type { Token as SharedToken } from "~~/shared/types";
 
 interface Props {
-  tokens: Token[];
+  tokens: SharedToken[];
   collapsed?: boolean;
 }
 

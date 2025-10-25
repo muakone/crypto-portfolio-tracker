@@ -1,9 +1,9 @@
 <template>
   <aside
-    class="fixed left-0 top-0 z-40 h-screen border-r border-white/10 bg-black/40 backdrop-blur-xl transition-all duration-300 flex flex-col"
+    class="fixed top-0 z-40 h-screen bg-black/40 backdrop-blur-xl transition-all duration-300 flex flex-col left-auto lg:left-0 right-0 lg:right-auto border-l lg:border-r border-white/10"
     :class="[
       isCollapsed ? 'w-20' : 'w-64',
-      !isOpen && 'max-lg:-translate-x-full',
+      !isOpen && 'max-lg:translate-x-full',
     ]"
   >
     <!-- Logo/Brand with Close Button (Mobile) -->
@@ -72,6 +72,7 @@
           isCollapsed ? 'justify-center' : 'gap-3',
         ]"
         :title="isCollapsed ? item.label : ''"
+        @click="onNavClick"
       >
         <Icon :name="item.icon" class="h-5 w-5 flex-shrink-0" />
         <span v-if="!isCollapsed">{{ item.label }}</span>
@@ -183,6 +184,17 @@ const toggleCollapse = () => {
   isCollapsed.value = !isCollapsed.value;
   // Save state to localStorage
   localStorage.setItem("sidebarCollapsed", String(isCollapsed.value));
+};
+
+const onNavClick = () => {
+  // If this is a mobile viewport and the sidebar is open, close it after navigation
+  try {
+    if (window.innerWidth < 1024 && isOpen.value) {
+      isOpen.value = false;
+    }
+  } catch (e) {
+    // ignore (server side rendering)
+  }
 };
 
 const userName = computed(() => {

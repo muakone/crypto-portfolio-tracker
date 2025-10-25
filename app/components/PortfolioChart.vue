@@ -75,7 +75,7 @@ import {
   type ChartOptions,
   type TooltipItem,
 } from "chart.js";
-import type { TokenDistribution } from "~~/shared/types";
+import type { TokenDistribution } from "@shared/types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

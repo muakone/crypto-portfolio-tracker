@@ -3,7 +3,9 @@
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
         <p class="section-title">Holdings</p>
-        <h2 class="mt-2 text-2xl font-semibold text-white">Your Assets</h2>
+        <h2 class="mt-2 text-lg sm:text-2xl font-semibold text-white">
+          Your Assets
+        </h2>
         <p class="mt-2 text-xs text-slate-400">
           Live balances sourced from CoinGecko pricing and synced wallets.
         </p>
@@ -40,10 +42,20 @@
           <tr
             class="border-b border-white/10 text-left text-xs uppercase text-gray-500"
           >
-            <th class="py-3 pl-4 pr-6 font-medium">Asset</th>
-            <th class="py-3 px-6 text-right font-medium">Balance</th>
-            <th class="py-3 px-6 text-right font-medium">Value (USD)</th>
-            <th class="py-3 pl-6 pr-4 text-right font-medium">Allocation</th>
+            <th class="py-2 pl-2 pr-3 sm:py-3 sm:pl-4 sm:pr-6 font-medium">
+              Asset
+            </th>
+            <th class="py-2 px-3 sm:py-3 sm:px-6 text-right font-medium">
+              Balance
+            </th>
+            <th class="py-2 px-3 sm:py-3 sm:px-6 text-right font-medium">
+              Value (USD)
+            </th>
+            <th
+              class="py-2 pl-3 pr-2 sm:py-3 sm:pl-6 sm:pr-4 text-right font-medium"
+            >
+              Allocation
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -52,27 +64,27 @@
             :key="`${token.symbol}-${index}`"
             class="border-b border-white/5 transition-colors hover:bg-white/5"
           >
-            <td class="py-4 pl-4 pr-6">
+            <td class="py-3 pl-2 pr-3 sm:py-4 sm:pl-4 sm:pr-6">
               <div class="flex items-center gap-3">
                 <span
-                  class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/40 to-sky-500/40 text-xl"
+                  class="flex h-8 w-8 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/40 to-sky-500/40 text-base sm:text-lg"
                 >
                   <Icon
                     :name="getTokenIconName(token.symbol)"
-                    class="h-5 w-5 text-white"
+                    class="h-4 w-4 sm:h-5 sm:w-5 text-white"
                   />
                 </span>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="text-sm font-semibold text-white">
+                    <span class="text-sm sm:text-base font-semibold text-white">
                       {{ token.symbol }}
                     </span>
-                    <span class="badge-soft text-[0.65rem] text-gray-300">
+                    <span class="badge-soft text-[0.6rem] text-gray-300">
                       Top {{ index + 1 }}
                     </span>
                   </div>
                   <div
-                    class="mt-2 h-1.5 w-40 overflow-hidden rounded-full bg-slate-800"
+                    class="mt-2 h-1.5 w-32 sm:w-40 overflow-hidden rounded-full bg-slate-800"
                   >
                     <span
                       class="block h-full rounded-full bg-gradient-to-r from-purple-500 via-sky-500 to-emerald-400"
@@ -82,13 +94,19 @@
                 </div>
               </div>
             </td>
-            <td class="py-4 px-6 text-right text-sm text-gray-300">
+            <td
+              class="py-3 px-3 sm:py-4 sm:px-6 text-right text-xs sm:text-sm text-gray-300"
+            >
               {{ formatBalance(token.balance) }}
             </td>
-            <td class="py-4 px-6 text-right text-sm font-semibold text-white">
+            <td
+              class="py-3 px-3 sm:py-4 sm:px-6 text-right text-xs sm:text-sm font-semibold text-white"
+            >
               {{ formatCurrency(token.usd_value) }}
             </td>
-            <td class="py-4 pl-6 pr-4 text-right text-sm text-gray-300">
+            <td
+              class="py-3 pl-3 pr-2 sm:py-4 sm:pl-6 sm:pr-4 text-right text-xs sm:text-sm text-gray-300"
+            >
               {{ formatPercentage(token.percentage) }}
             </td>
           </tr>

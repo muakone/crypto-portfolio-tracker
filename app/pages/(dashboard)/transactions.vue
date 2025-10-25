@@ -9,7 +9,9 @@
         >
           ← Back to Dashboard
         </NuxtLink>
-        <h1 class="text-4xl font-bold mb-2">Transaction History</h1>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+          Transaction History
+        </h1>
         <p class="text-gray-400">View all your crypto transactions</p>
       </div>
 
@@ -211,9 +213,10 @@
 
           <!-- Pagination -->
           <div
-            class="flex items-center justify-between px-6 py-4 border-t border-white/10"
+            v-if="totalPages > 1"
+            class="flex items-center justify-between border-t border-white/5 px-6 py-4"
           >
-            <div class="text-sm text-gray-400">
+            <div class="text-sm text-gray-400 hidden sm:block">
               Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
               {{
                 Math.min(
@@ -223,21 +226,73 @@
               }}
               of {{ filteredTransactions.length }} transactions
             </div>
-            <div class="flex gap-2">
-              <button
-                @click="currentPage--"
-                :disabled="currentPage === 1"
-                class="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors"
+
+            <div class="flex items-center gap-2">
+              <!-- Mobile: simple prev/current/next -->
+              <div
+                class="flex items-center gap-2 sm:hidden text-sm text-gray-400"
               >
-                Previous
-              </button>
-              <button
-                @click="currentPage++"
-                :disabled="currentPage >= totalPages"
-                class="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors"
-              >
-                Next
-              </button>
+                <button
+                  @click="goToPage(currentPage - 1)"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+                </button>
+                <div class="text-sm">
+                  Page {{ currentPage }} / {{ totalPages }}
+                </div>
+                <button
+                  @click="goToPage(currentPage + 1)"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
+                </button>
+              </div>
+
+              <!-- Desktop: full pagination -->
+              <div class="hidden sm:flex items-center gap-2">
+                <!-- Previous Button -->
+                <button
+                  @click="goToPage(currentPage - 1)"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+                </button>
+
+                <!-- Page Numbers -->
+                <div class="flex items-center gap-1">
+                  <button
+                    v-for="page in totalPages"
+                    :key="page"
+                    v-show="
+                      page === 1 ||
+                      page === totalPages ||
+                      Math.abs(page - currentPage) <= 1
+                    "
+                    @click="goToPage(page)"
+                    :class="[
+                      'px-3 py-2 rounded-lg border transition-all min-w-[40px]',
+                      page === currentPage
+                        ? 'border-blue-500 bg-blue-500/20 text-blue-400 font-semibold'
+                        : 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
+                    ]"
+                  >
+                    {{ page }}
+                  </button>
+                </div>
+
+                <!-- Next Button -->
+                <button
+                  @click="goToPage(currentPage + 1)"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -261,154 +316,31 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from "@supabase/supabase-js";
+import TransactionsFilters from "~/components/TransactionsFilters.vue";
+import TransactionsList from "~/components/TransactionsList.vue";
+import { useTransactions } from "~/composables/useTransactions";
 
-definePageMeta({
-  layout: "dashboard",
-  middleware: "auth",
-});
+definePageMeta({ layout: "dashboard", middleware: "auth" });
 
-const { getUser, getWallets } = useSupabase();
-const { getTransactionHistory } = useWallet();
+const {
+  user,
+  wallets,
+  transactions,
+  loading,
+  selectedWallet,
+  selectedType,
+  currentPage,
+  itemsPerPage,
+  filteredTransactions,
+  paginatedTransactions,
+  totalPages,
+  goToPage,
+  refreshTransactions,
+  formatAddress,
+  formatHash,
+  formatFullTime,
+  getExplorerLink,
+} = useTransactions();
 
-const user = ref<User | null>(null);
-const wallets = ref<any[]>([]);
-const transactions = ref<any[]>([]);
-const loading = ref(true);
-const selectedWallet = ref("all");
-const selectedType = ref("all");
-const currentPage = ref(1);
-const itemsPerPage = 20;
-
-// Filtered transactions
-const filteredTransactions = computed(() => {
-  let filtered = transactions.value;
-
-  // Filter by wallet
-  if (selectedWallet.value !== "all") {
-    const wallet = wallets.value.find((w) => w.id === selectedWallet.value);
-    if (wallet) {
-      filtered = filtered.filter(
-        (tx) =>
-          tx.from.toLowerCase() === wallet.address.toLowerCase() ||
-          tx.to.toLowerCase() === wallet.address.toLowerCase()
-      );
-    }
-  }
-
-  // Filter by type
-  if (selectedType.value !== "all") {
-    filtered = filtered.filter((tx) => {
-      if (selectedType.value === "sent") return tx.isOutgoing;
-      if (selectedType.value === "received") return !tx.isOutgoing;
-      return true;
-    });
-  }
-
-  return filtered;
-});
-
-// Paginated transactions
-const paginatedTransactions = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return filteredTransactions.value.slice(start, end);
-});
-
-const totalPages = computed(() =>
-  Math.ceil(filteredTransactions.value.length / itemsPerPage)
-);
-
-// Load transactions
-const loadTransactions = async () => {
-  loading.value = true;
-
-  try {
-    const currentUser = await getUser();
-    if (!currentUser) {
-      navigateTo("/login");
-      return;
-    }
-
-    user.value = currentUser;
-
-    // Get all wallets
-    const { data: walletsData } = await getWallets(currentUser.id);
-    if (walletsData) {
-      wallets.value = walletsData;
-
-      // Fetch transactions for all wallets
-      const allTransactions = [];
-      for (const wallet of walletsData) {
-        const txs = await getTransactionHistory(
-          wallet.address,
-          wallet.chain,
-          100
-        );
-
-        // Add wallet info and determine direction
-        const txsWithInfo = txs.map((tx: any) => ({
-          ...tx,
-          walletId: wallet.id,
-          walletAddress: wallet.address,
-          isOutgoing: tx.from.toLowerCase() === wallet.address.toLowerCase(),
-        }));
-
-        allTransactions.push(...txsWithInfo);
-      }
-
-      // Sort by timestamp (newest first)
-      transactions.value = allTransactions.sort(
-        (a, b) => b.timestamp - a.timestamp
-      );
-    }
-  } catch (err) {
-    console.error("Error loading transactions:", err);
-  } finally {
-    loading.value = false;
-  }
-};
-
-const refreshTransactions = () => {
-  currentPage.value = 1;
-  loadTransactions();
-};
-
-// Format functions
-const formatAddress = (address: string): string => {
-  if (!address || address.length < 10) return address;
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-};
-
-const formatHash = (hash: string): string => {
-  return `${hash.slice(0, 10)}...${hash.slice(-8)}`;
-};
-
-const formatFullTime = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  return date.toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
-const getExplorerLink = (tx: any): string => {
-  if (tx.type === "ETH") {
-    return `https://etherscan.io/tx/${tx.hash}`;
-  } else if (tx.type === "BTC") {
-    return `https://www.blockchain.com/btc/tx/${tx.hash}`;
-  }
-  return "#";
-};
-
-onMounted(() => {
-  loadTransactions();
-});
-
-useHead({
-  title: "Transaction History",
-});
+useHead({ title: "Transaction History" });
 </script>

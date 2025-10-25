@@ -5,7 +5,7 @@
         <div>
           <div class="flex items-center gap-3">
             <div class="flex items-center gap-2">
-              <span class="text-2xl">👋</span>
+              <span class="text-2xl md:block hidden">👋</span>
               <div>
                 <p class="text-sm text-gray-400">Welcome back,</p>
                 <h1 class="text-2xl font-bold text-white">{{ userName }}</h1>

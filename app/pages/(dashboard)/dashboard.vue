@@ -45,21 +45,21 @@
               <div
                 class="flex items-center justify-between border-b border-white/10 px-6 py-4"
               >
-                <h3 class="text-lg font-semibold text-white">Your Assets</h3>
+                <h3 class="md:text-lg font-semibold text-white">Your Assets</h3>
                 <div class="flex items-center gap-3">
                   <NuxtLink
                     to="/add-wallet"
                     class="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:from-blue-700 hover:to-purple-700"
                   >
-                    <Icon name="mdi:plus" class="h-4 w-4" />
+                    <Icon name="mdi:plus" class="h-4 w-4 md:block hidden" />
                     Add Wallet
                   </NuxtLink>
                   <NuxtLink
                     to="/assets"
                     class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
                   >
-                    See More
-                    <Icon name="mdi:arrow-right" class="h-4 w-4" />
+                    View All
+                
                   </NuxtLink>
                 </div>
               </div>
@@ -110,128 +110,30 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from "@supabase/supabase-js";
+
+import { useDashboard } from "~/composables/useDashboard";
 
 definePageMeta({
   layout: "dashboard",
   middleware: "auth",
 });
 
-const { getUser, getWallets } = useSupabase();
 const {
-  refreshPortfolio,
-  loading: portfolioLoading,
-  tokens,
-  totalValue,
-  distribution,
-} = usePortfolio();
-const { getTransactionHistory } = useWallet();
-
-const user = ref<User | null>(null);
-const loading = ref(true);
-const lastSync = ref(new Date());
-const transactions = ref<any[]>([]);
-const txLoading = ref(false);
-const primaryWalletAddress = ref<string>("");
-const isSidebarCollapsed = ref(false);
-
-// Use real portfolio data - LIMIT TO TOP 5 for dashboard
-const displayTokens = computed(() => {
-  // Sort by USD value (highest first) and take top 5
-  return [...tokens.value]
-    .sort((a, b) => (b.usd_value || 0) - (a.usd_value || 0))
-    .slice(0, 5);
-});
-const displayTotalValue = computed(() => totalValue.value);
-const dummyDistribution = computed(() => distribution.value);
-
-// Calculate total 24h change from real data
-const totalChange = computed(() => {
-  if (tokens.value.length === 0) return 0;
-  const totalChangeValue = tokens.value.reduce(
-    (sum, token) => sum + (token.change_24h_value || 0),
-    0
-  );
-  const total = totalValue.value;
-  return total > 0 ? (totalChangeValue / total) * 100 : 0;
-});
-
-const totalChangeAmount = computed(() => {
-  return tokens.value.reduce(
-    (sum, token) => sum + (token.change_24h_value || 0),
-    0
-  );
-});
-
-// Load transaction history
-const loadTransactions = async () => {
-  if (!user.value) return;
-
-  txLoading.value = true;
-  try {
-    const { data: wallets } = await getWallets(user.value.id);
-    if (!wallets || wallets.length === 0) return;
-
-    // Set primary wallet address for the component
-    primaryWalletAddress.value = wallets[0].address;
-
-    // Fetch transactions for all wallets
-    const allTxs = [];
-    for (const wallet of wallets) {
-      const txs = await getTransactionHistory(wallet.address, wallet.chain, 20);
-      allTxs.push(...txs);
-    }
-
-    // Sort by timestamp (newest first)
-    transactions.value = allTxs.sort((a, b) => b.timestamp - a.timestamp);
-  } catch (error) {
-    console.error("Error loading transactions:", error);
-  } finally {
-    txLoading.value = false;
-  }
-};
-
-onMounted(async () => {
-  // Watch for sidebar collapse state
-  const updateCollapsedState = () => {
-    isSidebarCollapsed.value =
-      localStorage.getItem("sidebarCollapsed") === "true";
-  };
-
-  updateCollapsedState();
-
-  // Poll for changes
-  const interval = setInterval(updateCollapsedState, 100);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-
-  loading.value = true;
-  user.value = await getUser();
-
-  const currentUser = user.value;
-  if (currentUser) {
-    await refreshPortfolio(currentUser.id);
-    lastSync.value = new Date();
-
-    // Load transactions
-    await loadTransactions();
-  }
-
-  loading.value = false;
-});
-
-const refresh = async () => {
-  const currentUser = user.value;
-  if (currentUser) {
-    await refreshPortfolio(currentUser.id);
-    lastSync.value = new Date();
-
-    // Also refresh transactions
-    await loadTransactions();
-  }
-};
+  user,
+  loading,
+  lastSync,
+  transactions,
+  txLoading,
+  primaryWalletAddress,
+  isSidebarCollapsed,
+  displayTokens,
+  displayTotalValue,
+  dummyDistribution,
+  totalChange,
+  totalChangeAmount,
+  portfolioLoading,
+  refresh,
+} = useDashboard();
 
 useHead({
   title: "Dashboard",

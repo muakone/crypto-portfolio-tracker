@@ -1,7 +1,9 @@
 <template>
   <NuxtLayout>
     <div class="max-w-xl mx-auto py-24 text-center space-y-4">
-      <h1 class="text-4xl font-bold">Something went wrong</h1>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold">
+        Something went wrong
+      </h1>
       <p class="text-gray-400">
         {{ error?.message || "An unexpected error occurred." }}
       </p>

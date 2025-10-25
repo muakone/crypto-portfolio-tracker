@@ -9,7 +9,9 @@
         >
           ← Back to Dashboard
         </NuxtLink>
-        <h1 class="text-4xl font-bold mb-2">Add Wallet</h1>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+          Add Wallet
+        </h1>
         <p class="text-gray-400">Connect your wallet or add it manually</p>
       </div>
 

@@ -9,8 +9,10 @@
         >
           ← Back to Dashboard
         </NuxtLink>
-        <h1 class="text-4xl font-bold mb-2">DeFi Dashboard</h1>
-        <p class="text-gray-400">Track your DeFi positions and yields</p>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+          NFT Gallery
+        </h1>
+        <p class="text-gray-400">View and manage your NFT collection</p>
       </div>
 
       <!-- Coming Soon Card -->
@@ -20,33 +22,33 @@
         <div class="max-w-2xl mx-auto">
           <!-- Title -->
           <h2
-            class="mb-4 text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+            class="mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
           >
             Coming Soon
           </h2>
 
           <!-- Description -->
           <p class="mb-8 text-lg text-gray-400">
-            DeFi tracking and analytics features are under development
+            NFT collection management features are under development
           </p>
 
           <!-- Feature List -->
           <div class="mx-auto mb-8 max-w-md space-y-3 text-left">
             <div class="flex items-center gap-3 text-gray-300">
               <Icon name="mdi:check-circle" class="h-5 w-5 text-green-400" />
-              <span>Staking positions & rewards</span>
+              <span>NFT collection gallery</span>
             </div>
             <div class="flex items-center gap-3 text-gray-300">
               <Icon name="mdi:check-circle" class="h-5 w-5 text-green-400" />
-              <span>Liquidity pool tracking</span>
+              <span>Floor price tracking</span>
             </div>
             <div class="flex items-center gap-3 text-gray-300">
               <Icon name="mdi:check-circle" class="h-5 w-5 text-green-400" />
-              <span>Yield farming analytics</span>
+              <span>Rarity scores & rankings</span>
             </div>
             <div class="flex items-center gap-3 text-gray-300">
               <Icon name="mdi:check-circle" class="h-5 w-5 text-green-400" />
-              <span>Multi-protocol support</span>
+              <span>Multi-chain NFT support</span>
             </div>
           </div>
         </div>

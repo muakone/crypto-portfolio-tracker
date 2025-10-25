@@ -1,6 +1,8 @@
 <template>
   <div class="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl">
-    <div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
+    <div
+      class="flex items-center justify-between border-b border-white/10 px-6 py-4"
+    >
       <h3 class="text-lg font-semibold text-white">Recent Transactions</h3>
       <NuxtLink
         to="/transactions"
@@ -12,7 +14,10 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="px-6 py-16 text-center">
-      <Icon name="mdi:loading" class="h-12 w-12 mx-auto mb-3 animate-spin text-blue-500" />
+      <Icon
+        name="mdi:loading"
+        class="h-12 w-12 mx-auto mb-3 animate-spin text-blue-500"
+      />
       <p class="text-gray-400">Loading transactions...</p>
     </div>
 
@@ -32,7 +37,7 @@
                 'flex h-10 w-10 items-center justify-center rounded-full text-xl',
                 tx.isOutgoing
                   ? 'bg-red-500/20 text-red-400'
-                  : 'bg-green-500/20 text-green-400'
+                  : 'bg-green-500/20 text-green-400',
               ]"
             >
               {{ tx.isOutgoing ? "↑" : "↓" }}
@@ -44,7 +49,9 @@
                 {{ tx.isOutgoing ? "Sent" : "Received" }} {{ tx.type }}
               </p>
               <div class="flex items-center gap-2 text-xs text-gray-400">
-                <span>{{ formatAddress(tx.isOutgoing ? tx.to : tx.from) }}</span>
+                <span>{{
+                  formatAddress(tx.isOutgoing ? tx.to : tx.from)
+                }}</span>
                 <span>•</span>
                 <span>{{ formatTime(tx.timestamp) }}</span>
               </div>
@@ -56,10 +63,11 @@
             <p
               :class="[
                 'font-semibold text-sm',
-                tx.isOutgoing ? 'text-red-400' : 'text-green-400'
+                tx.isOutgoing ? 'text-red-400' : 'text-green-400',
               ]"
             >
-              {{ tx.isOutgoing ? "-" : "+" }}{{ tx.value.toFixed(6) }} {{ tx.type }}
+              {{ tx.isOutgoing ? "-" : "+" }}{{ tx.value.toFixed(6) }}
+              {{ tx.type }}
             </p>
             <div class="flex items-center gap-1.5 justify-end mt-1">
               <span
@@ -84,7 +92,10 @@
 
     <!-- Empty State -->
     <div v-else class="px-6 py-16 text-center">
-      <Icon name="mdi:swap-horizontal" class="h-16 w-16 mx-auto mb-4 text-gray-600" />
+      <Icon
+        name="mdi:swap-horizontal"
+        class="h-16 w-16 mx-auto mb-4 text-gray-600"
+      />
       <h3 class="text-xl font-semibold text-white mb-2">No Transactions Yet</h3>
       <p class="text-gray-400 text-sm">
         Your transaction history will appear here
@@ -94,20 +105,10 @@
 </template>
 
 <script setup lang="ts">
-interface Transaction {
-  hash: string;
-  from: string;
-  to: string;
-  value: number;
-  timestamp: number;
-  blockNumber: number;
-  isError: boolean;
-  type: string;
-  isOutgoing?: boolean;
-}
+import type { Transaction as SharedTransaction } from "~~/shared/types";
 
 interface Props {
-  transactions: Transaction[];
+  transactions: SharedTransaction[];
   loading?: boolean;
   limit?: number;
   walletAddress?: string;
@@ -120,11 +121,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Add isOutgoing flag to transactions
 const displayedTransactions = computed(() => {
-  return props.transactions.slice(0, props.limit).map(tx => ({
+  return props.transactions.slice(0, props.limit).map((tx) => ({
     ...tx,
-    isOutgoing: props.walletAddress 
+    isOutgoing: props.walletAddress
       ? tx.from.toLowerCase() === props.walletAddress.toLowerCase()
-      : tx.from.toLowerCase().includes('0x') // Default heuristic
+      : tx.from.toLowerCase().includes("0x"), // Default heuristic
   }));
 });
 

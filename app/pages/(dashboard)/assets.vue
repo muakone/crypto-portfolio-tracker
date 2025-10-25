@@ -9,7 +9,9 @@
         >
           ← Back to Dashboard
         </NuxtLink>
-        <h1 class="text-4xl font-bold mb-2">All Assets</h1>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+          All Assets
+        </h1>
         <p class="text-gray-400">Manage your crypto portfolio</p>
       </div>
 
@@ -19,7 +21,7 @@
           class="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl p-6"
         >
           <p class="text-gray-400 text-sm mb-2">Total Value</p>
-          <p class="text-3xl font-bold text-white">
+          <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
             {{ formatCurrency(totalValue) }}
           </p>
           <p
@@ -37,7 +39,9 @@
           class="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl p-6"
         >
           <p class="text-gray-400 text-sm mb-2">Total Assets</p>
-          <p class="text-3xl font-bold text-white">{{ tokens.length }}</p>
+          <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+            {{ tokens.length }}
+          </p>
           <p class="text-sm text-gray-500 mt-2">
             Across {{ wallets.length }} wallet{{
               wallets.length !== 1 ? "s" : ""
@@ -49,7 +53,7 @@
           class="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl p-6"
         >
           <p class="text-gray-400 text-sm mb-2">Top Asset</p>
-          <p class="text-3xl font-bold text-white">
+          <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
             {{ topAsset?.symbol || "N/A" }}
           </p>
           <p class="text-sm text-gray-400 mt-2">
@@ -94,36 +98,36 @@
           v-else-if="tokens.length > 0"
           class="overflow-x-auto scrollbar-hide"
         >
-          <table class="w-full min-w-[900px]">
+          <table class="w-full min-w-[700px] sm:min-w-[900px]">
             <thead>
               <tr class="border-b border-white/5">
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   Asset
                 </th>
                 <th
-                  class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   Price
                 </th>
                 <th
-                  class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   Balance
                 </th>
                 <th
-                  class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   Value
                 </th>
                 <th
-                  class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   24H Change
                 </th>
                 <th
-                  class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
+                  class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium uppercase text-gray-500 whitespace-nowrap"
                 >
                   Allocation
                 </th>
@@ -139,34 +143,36 @@
                 <td class="px-6 py-4">
                   <div class="flex items-center gap-3">
                     <div
-                      class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-xl"
+                      class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-lg sm:text-xl"
                     >
                       {{ getTokenIcon(token.symbol) }}
                     </div>
                     <div>
-                      <p class="font-semibold text-white">{{ token.name }}</p>
-                      <p class="text-xs text-gray-500">{{ token.symbol }}</p>
+                      <p class="text-sm sm:text-base font-semibold text-white">
+                        {{ token.name }}
+                      </p>
+                      <p class="text-xs text-gray-400">{{ token.symbol }}</p>
                     </div>
                   </div>
                 </td>
 
                 <!-- Price -->
                 <td class="px-6 py-4 text-right">
-                  <p class="text-sm font-medium text-white">
+                  <p class="text-xs sm:text-sm font-medium text-white">
                     {{ formatCurrency(token.price || 0) }}
                   </p>
                 </td>
 
                 <!-- Balance -->
                 <td class="px-6 py-4 text-right">
-                  <p class="text-sm text-gray-300">
+                  <p class="text-xs sm:text-sm text-gray-300">
                     {{ formatAmount(token.balance || 0) }}
                   </p>
                 </td>
 
                 <!-- Value -->
                 <td class="px-6 py-4 text-right">
-                  <p class="text-sm font-semibold text-white">
+                  <p class="text-xs sm:text-sm font-semibold text-white">
                     {{ formatCurrency(token.usd_value || 0) }}
                   </p>
                 </td>
@@ -176,7 +182,7 @@
                   <div class="inline-flex flex-col items-end">
                     <span
                       :class="[
-                        'text-sm font-semibold',
+                        'text-xs sm:text-sm font-semibold',
                         (token.change_24h || 0) >= 0
                           ? 'text-green-400'
                           : 'text-red-400',
@@ -195,7 +201,7 @@
 
                 <!-- Allocation -->
                 <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
+                  <div class="flex items-center gap-2 justify-end">
                     <div
                       class="w-16 h-2 bg-white/10 rounded-full overflow-hidden"
                     >
@@ -204,7 +210,7 @@
                         :style="{ width: `${getAllocation(token.usd_value)}%` }"
                       ></div>
                     </div>
-                    <span class="text-xs text-gray-400 w-12">
+                    <span class="text-xs text-gray-400 w-12 text-right">
                       {{ getAllocation(token.usd_value).toFixed(1) }}%
                     </span>
                   </div>
@@ -218,52 +224,78 @@
             v-if="totalPages > 1"
             class="flex items-center justify-between border-t border-white/5 px-6 py-4"
           >
-            <div class="text-sm text-gray-400">
+            <div class="text-sm text-gray-400 hidden sm:block">
               Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
               {{ Math.min(currentPage * itemsPerPage, sortedTokens.length) }} of
               {{ sortedTokens.length }} assets
             </div>
 
             <div class="flex items-center gap-2">
-              <!-- Previous Button -->
-              <button
-                @click="goToPage(currentPage - 1)"
-                :disabled="currentPage === 1"
-                class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              <!-- Mobile: simple prev/current/next -->
+              <div
+                class="flex items-center gap-2 sm:hidden text-sm text-gray-400"
               >
-                <Icon name="mdi:chevron-left" class="h-5 w-5" />
-              </button>
-
-              <!-- Page Numbers -->
-              <div class="flex items-center gap-1">
                 <button
-                  v-for="page in totalPages"
-                  :key="page"
-                  v-show="
-                    page === 1 ||
-                    page === totalPages ||
-                    Math.abs(page - currentPage) <= 1
-                  "
-                  @click="goToPage(page)"
-                  :class="[
-                    'px-3 py-2 rounded-lg border transition-all min-w-[40px]',
-                    page === currentPage
-                      ? 'border-blue-500 bg-blue-500/20 text-blue-400 font-semibold'
-                      : 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
-                  ]"
+                  @click="goToPage(currentPage - 1)"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
-                  {{ page }}
+                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+                </button>
+                <div class="text-sm">
+                  Page {{ currentPage }} / {{ totalPages }}
+                </div>
+                <button
+                  @click="goToPage(currentPage + 1)"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
                 </button>
               </div>
 
-              <!-- Next Button -->
-              <button
-                @click="goToPage(currentPage + 1)"
-                :disabled="currentPage === totalPages"
-                class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-              >
-                <Icon name="mdi:chevron-right" class="h-5 w-5" />
-              </button>
+              <!-- Desktop: full pagination -->
+              <div class="hidden sm:flex items-center gap-2">
+                <!-- Previous Button -->
+                <button
+                  @click="goToPage(currentPage - 1)"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+                </button>
+
+                <!-- Page Numbers -->
+                <div class="flex items-center gap-1">
+                  <button
+                    v-for="page in totalPages"
+                    :key="page"
+                    v-show="
+                      page === 1 ||
+                      page === totalPages ||
+                      Math.abs(page - currentPage) <= 1
+                    "
+                    @click="goToPage(page)"
+                    :class="[
+                      'px-3 py-2 rounded-lg border transition-all min-w-[40px]',
+                      page === currentPage
+                        ? 'border-blue-500 bg-blue-500/20 text-blue-400 font-semibold'
+                        : 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
+                    ]"
+                  >
+                    {{ page }}
+                  </button>
+                </div>
+
+                <!-- Next Button -->
+                <button
+                  @click="goToPage(currentPage + 1)"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                >
+                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -3,11 +3,13 @@
   <nav
     class="lg:hidden sticky top-0 z-30 border-b border-white/10 bg-black/40 backdrop-blur-xl"
   >
-    <div class="flex h-16 items-center justify-between px-4">
+    <div class="flex h-14 items-center justify-between px-4">
       <!-- Page Title -->
-      <h1 class="text-lg font-bold text-white truncate">{{ pageTitle }}</h1>
+      <h1 class="text-base sm:text-lg font-semibold text-white truncate">
+        {{ pageTitle }}
+      </h1>
 
-      <!-- Hamburger Menu Button -->
+      <!-- Hamburger Menu Button (right) -->
       <button
         aria-label="Open menu"
         class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition-all"

@@ -3,7 +3,9 @@
     <div class="flex items-start justify-between mb-6">
       <div>
         <p class="text-sm text-gray-400">Total Worth</p>
-        <h2 class="mt-2 text-5xl font-bold text-white">
+        <h2
+          class="mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white"
+        >
           {{ formatCurrency(totalValue) }}
         </h2>
         <div class="mt-3 flex items-center gap-3">
@@ -33,7 +35,7 @@
       <div class="flex items-center gap-3">
         <button
           :disabled="loading"
-          class="flex items-center gap-2 rounded-lg text-sm text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+          class="md:flex hidden items-center gap-2 rounded-lg text-sm text-gray-400 transition-colors hover:text-white disabled:opacity-50"
           @click="$emit('refresh')"
         >
           <Icon
@@ -43,7 +45,7 @@
           />
           Sync All
         </button>
-        <span class="text-xs text-gray-500">
+        <span class="text-xs text-gray-500 md:block hidden">
           Last Updated {{ formattedSyncTime }}
         </span>
       </div>
