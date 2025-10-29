@@ -1,8 +1,8 @@
 # 🪙 Crypto Portfolio Tracker
 
-A responsive web app built with **Nuxt 3**, **Supabase**, and **CoinGecko API** that lets users track all their cryptocurrencies in one dashboard — inspired by [CoinStats](https://coinstats.app/portfolio/).
+A responsive web app built with **Nuxt 4**, **Supabase**, and **CoinGecko API** that lets users track all their cryptocurrencies in one dashboard .
 
-![Nuxt 3](https://img.shields.io/badge/Nuxt-3-00DC82?logo=nuxt.js)
+![Nuxt 4](https://img.shields.io/badge/Nuxt-3-00DC82?logo=nuxt.js)
 ![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vue.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwind-css)
@@ -24,7 +24,7 @@ A responsive web app built with **Nuxt 3**, **Supabase**, and **CoinGecko API** 
 
 | Layer       | Technology     | Purpose                 |
 | ----------- | -------------- | ----------------------- |
-| Frontend    | Nuxt 3 (Vue 3) | UI & routing            |
+| Frontend    | Nuxt 4 (Vue 3) | UI & routing            |
 | Backend     | Supabase       | Auth & database         |
 | Wallets     | ethers.js      | MetaMask integration    |
 | Market Data | CoinGecko API  | Real-time prices        |
