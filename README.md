@@ -2,7 +2,7 @@
 
 A responsive web app built with **Nuxt 4**, **Supabase**, and **CoinGecko API** that lets users track all their cryptocurrencies in one dashboard .
 
-![Nuxt 4](https://img.shields.io/badge/Nuxt-3-00DC82?logo=nuxt.js)
+![Nuxt 4](https://img.shields.io/badge/Nuxt-4-00DC82?logo=nuxt.js)
 ![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vue.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwind-css)
@@ -38,7 +38,7 @@ A responsive web app built with **Nuxt 4**, **Supabase**, and **CoinGecko API** 
 
 ## 📚 Learn More
 
-- [Nuxt 3 Documentation](https://nuxt.com/docs)
+- [Nuxt 4 Documentation](https://nuxt.com/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [CoinGecko API](https://www.coingecko.com/en/api)
 - [Ethers.js Documentation](https://docs.ethers.org/)
